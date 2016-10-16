@@ -8,7 +8,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const { getIfUtils, removeEmpty } = require('webpack-config-utils');
 
-module.exports = env => {
+const webpackConfiguration = env => {
 	if (!env) {
 		const env = {};
 	}
@@ -24,12 +24,12 @@ module.exports = env => {
 		},
 
 		output: {
-			fileName: ifProduction('bundle.[name].[chunkhash].js', 'bundle.[name].js'),
+			filename: ifProduction('bundle.[name].[chunkhash].js', 'bundle.[name].js'),
 			path: resolve('app/dist'),
-			pathInfo: ifNotProduction()
+			pathinfo: ifNotProduction()
 		},
 
-		devTool: ifProduction('source-map', 'eval'),
+		devtool: ifProduction('source-map', 'eval'),
 
 		module: {
 			preLoaders: [
@@ -95,6 +95,8 @@ module.exports = env => {
 
 	return config;
 };
+
+module.exports = webpackConfiguration(process.env);
 
 // let path = require('path');
 // let webpack = require('webpack');
