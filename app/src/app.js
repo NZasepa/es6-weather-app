@@ -1,13 +1,13 @@
 // Import assets
-import './assets/scss/style.scss';
+require('./assets/scss/style.scss');
 
 // Imports
-import { _on } from './utils/functions';
+import { _on, _gs } from './utils/functions';
 
-export class App {
-	onLoad() {
-		let element = _gs('h1');
+export const onLoad = () => {
+	let element = _gs('h1');
 
-		element.textContent = 'Yup, I\'m working just fine. Remember to replace me in app/src/app.js';
-	}
-}
+	console.log(element);
+
+	element.textContent = 'Yup, I\'m working just fine. Remember to replace me in app/src/app.js';
+};

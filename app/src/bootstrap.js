@@ -1,10 +1,10 @@
 import { install as offlineInstall } from 'offline-plugin/runtime';
-import { App } from './app';
+import { onLoad } from './app';
 import { _on } from './utils/functions';
 
 const bootstrap = () => {
-	_on(window, 'load', App.onLoad());
-	_on(window, 'hashchange', App.onLoad());
+	_on(window, 'load', onLoad);
+	_on(window, 'hashchange', onLoad);
 
 	if (process.env.NODE_ENV === 'production') {
 		offlineInstall();
@@ -21,7 +21,7 @@ if (module.hot) {
 
   if (reloading) {
     console.log('🔁  HMR Reloading.');
-    App.onLoad();
+    onLoad();
   } else {
     console.info('✅  HMR Enabled.');
     bootstrap();

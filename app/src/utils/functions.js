@@ -1,10 +1,10 @@
-let useCapture = type === 'blur' || type === 'focus';
-
 // Add forEach to loop through gsa function elements
 NodeList.prototype.forEach = Array.prototype.forEach;
 
 // addEventListener
 const _on = (target, type, callback, handler) => {
+	let useCapture = type === 'blur' || type === 'focus';
+
 	target.addEventListener(type, callback, !!useCapture);
 };
 

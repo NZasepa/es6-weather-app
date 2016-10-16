@@ -1,4 +1,4 @@
-const { resolve } = require('path');
+const path = require('path');
 const webpack = require('webpack');
 const validate = require('webpack-validator');
 const OfflinePlugin = require('offline-plugin');
@@ -6,18 +6,14 @@ const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const autoprefixer = require('autoprefixer');
 const { getIfUtils, removeEmpty } = require('webpack-config-utils');
 
 const webpackConfiguration = env => {
-	if (!env) {
-		const env = {};
-	}
-
-	console.log(env);
 	const { ifProduction, ifNotProduction } = getIfUtils(env);
 
 	const config = validate({
-		context: resolve('app/src'),
+		context: path.join(__dirname, 'app/src'),
 
 		entry: {
 			app: './bootstrap.js'
@@ -25,36 +21,47 @@ const webpackConfiguration = env => {
 
 		output: {
 			filename: ifProduction('bundle.[name].[chunkhash].js', 'bundle.[name].js'),
-			path: resolve('app/dist'),
+			path: path.join(__dirname, 'app/dist'),
 			pathinfo: ifNotProduction()
 		},
 
 		devtool: ifProduction('source-map', 'eval'),
 
+		resolve: {
+	    extensions: [ '', '.js', '.es6', '.css', '.scss' ]
+	  },
+
+		postcss: [
+			autoprefixer({
+				browsers: [ 'last 2 versions' ]
+			})
+		],
+
 		module: {
 			preLoaders: [
 				{
-					test: /\.js$/,
+					test: /\.(js|es6)$/,
 					loader: 'jshint',
 					exclude: /node_modules/
 				}
 			],
 			loaders: [
 				{
-					test: /\.js$/,
-					loaders: ['babel'],
+					test: /\.(js|es6)$/,
+					loader: 'babel-loader',
 					exclude: /node_modules/
 				},
 				{
-					test: /\.css$/,
-					loader: ExtractTextPlugin.extract({
-						fallbackLoader: 'style',
-						loader: 'css!scss!autoprefixer'
-					})
+					test: /\.(scss|css)$/,
+					loader: ExtractTextPlugin.extract('style', 'css?module&localIdentName=[hash:base64:5]!sass')
 				},
 				{
-					test: /\.(png|jpg|woff|woff2|eot|ttf|otf)/,
-					loader: 'url-loader'
+					test: /\.(png|jpg|jpeg|gif|woff)$/,
+					loader: 'url?limit=8192'
+				},
+				{
+					test: /\.(otf|eot|ttf)$/,
+					loader: "file?prefix=font/"
 				},
 	      {
 					test: /\.svg/,
