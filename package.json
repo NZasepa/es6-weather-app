@@ -19,18 +19,17 @@
   ],
   "main": "app/src/main.js",
   "scripts": {
-    "setup": "npm install && npm run validate",
+    "setup": "yarn install",
     "lint": "eslint .",
     "start": "http-server dist",
     "dev": "webpack-dev-server --env.dev --hot",
     "build": "webpack --env.prod -p",
     "build:dev": "webpack --env.dev",
     "test": "karma start",
-    "watch:test": "npm test -- --auto-watch --no-single-run",
+    "watch:test": "yarn test -- --auto-watch --no-single-run",
     "debug": "node --inspect --debug-brk node_modules/.bin/webpack --env.debug",
-    "debug:dev": "npm run debug -- --env.dev",
-    "debug:prod": "npm run debug -- --env.prod",
-    "validate": "npm-run-all --parallel lint build test"
+    "debug:dev": "yarn run debug -- --env.dev",
+    "debug:prod": "yarn run debug -- --env.prod"
   },
   "devDependencies": {
     "autoprefixer-loader": "^3.2.0",
